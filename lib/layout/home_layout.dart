@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/moduels/archived_tasks/archived_tasks.dart';
 import 'package:todoapp/moduels/done_tasks/done_tasks.dart';
 import 'package:todoapp/moduels/tasks/tasks_screen.dart';
+import 'package:sqflite/sqflite.dart';
 class HomeLayout extends StatefulWidget {
   const HomeLayout({Key? key}) : super(key: key);
 
@@ -12,6 +13,12 @@ class HomeLayout extends StatefulWidget {
 
 class _HomeLayoutState extends State<HomeLayout> {
   int currentIndex =0 ;
+  Database ? database ;
+  @override
+  void initState() {
+    super.initState();
+    creatDatabase();
+  }
   List<Widget> screen = [
     TasksScreen(),
     DoneTasks(),
@@ -38,11 +45,6 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
       ),
       body: screen[currentIndex],
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueGrey[900],
-        onPressed: () {},
-        child: Icon(Icons.add),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
@@ -80,4 +82,30 @@ class _HomeLayoutState extends State<HomeLayout> {
       ),
     );
   }
+  void creatDatabase ()async
+  {
+    database = await openDatabase(
+     'todo.db' ,
+     version: 1 ,
+     onCreate: (database, version) {
+       print('Database created');
+       database.execute('CREAT TABLE TASKS(id INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT, status TEXT)').then(
+               (value) {
+                 print('Table Created');
+           }).catchError((error){
+         print("Error when creating Table : ${error.toString()}");
+       });
+     } ,
+     onOpen: (database) {
+       print('Database Opened');
+     },
+   );
+  }
+  void insertToDatabase()
+  {}
+  void deletFromDatabase()
+  {}
+  void updateIntoDatabase()
+  {}
+
 }
