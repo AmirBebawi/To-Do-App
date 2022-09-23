@@ -10,7 +10,7 @@ class DoneTasks extends StatefulWidget {
 class _DoneTasksState extends State<DoneTasks> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return  Center(
       child: Text(
         '300000',
         style: TextStyle(
@@ -18,6 +18,6 @@ class _DoneTasksState extends State<DoneTasks> {
             color: Colors.white
         ),
       ),
-    );;
+    );
   }
 }

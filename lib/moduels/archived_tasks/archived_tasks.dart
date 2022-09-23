@@ -10,7 +10,7 @@ class ArchivedTasks extends StatefulWidget {
 class _ArchivedTasksState extends State<ArchivedTasks> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return  Center(
       child: Text(
         'Ami2.0r',
         style: TextStyle(
