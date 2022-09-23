@@ -39,3 +39,44 @@ Widget defaultTextForm({
         ),
       ),
     );
+
+
+
+
+Widget defaultTaskItem (Map model)
+{
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 40.0,
+          child: Text('${model['time']}'),
+        ),
+        SizedBox(
+          width: 20.0,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${model['title']}',
+              style: TextStyle(
+                fontSize: 18.0 ,
+                fontWeight: FontWeight.bold ,
+              ),
+            ),
+            Text(
+              '${model['date']}',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
