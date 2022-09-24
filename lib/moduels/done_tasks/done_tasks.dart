@@ -10,14 +10,8 @@ class DoneTasks extends StatefulWidget {
 class _DoneTasksState extends State<DoneTasks> {
   @override
   Widget build(BuildContext context) {
-    return  Center(
-      child: Text(
-        '300000',
-        style: TextStyle(
-            fontSize: 50,
-            color: Colors.white
-        ),
-      ),
+    return  Scaffold(
+      backgroundColor: Colors.black87,
     );
   }
 }

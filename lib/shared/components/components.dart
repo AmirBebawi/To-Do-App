@@ -15,6 +15,7 @@ Widget defaultTextForm({
   suffixFuncion,
 }) =>
     TextFormField(
+      style: TextStyle(color: Colors.white),
       validator: validateFunction,
       keyboardType: textInputType,
       controller: controller,
@@ -23,36 +24,42 @@ Widget defaultTextForm({
       onFieldSubmitted: functionOnFieldSubmitted,
       onChanged: functionOnChanged,
       decoration: InputDecoration(
-        prefixIcon: Icon(prefixIcon),
-        suffix: suffixIcon != null
-            ? IconButton(
-                constraints: const BoxConstraints(maxHeight: 10, minHeight: 5),
-                onPressed: suffixFuncion,
-                icon: Icon(suffixIcon),
-              )
-            : null,
+        labelStyle: TextStyle(color: Colors.white),
+        prefixIcon: Icon(prefixIcon ,color: Colors.white),
         labelText: labelText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            raduis!,
+        fillColor: Colors.white,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(raduis!),
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(raduis),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 2.0,
           ),
         ),
       ),
     );
 
-
-
-
-Widget defaultTaskItem (Map model)
-{
+Widget defaultTaskItem(Map model) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
+          backgroundColor: Colors.amber,
           radius: 40.0,
-          child: Text('${model['time']}'),
+          child: Text(
+            '${model['time']}',
+            style: TextStyle(
+              color: Colors.white ,
+              fontWeight: FontWeight.w900
+            ),
+          ),
         ),
         SizedBox(
           width: 20.0,
@@ -64,14 +71,16 @@ Widget defaultTaskItem (Map model)
             Text(
               '${model['title']}',
               style: TextStyle(
-                fontSize: 18.0 ,
-                fontWeight: FontWeight.bold ,
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w900,
               ),
             ),
             Text(
               '${model['date']}',
               style: TextStyle(
                 color: Colors.grey,
+                fontWeight: FontWeight.w900,
               ),
             ),
           ],
