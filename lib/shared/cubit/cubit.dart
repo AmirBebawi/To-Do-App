@@ -10,11 +10,13 @@ import '../../moduels/new_tasks/new_tasks.dart';
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitalState());
 
-   static AppCubit get(context) {
-     return BlocProvider.of(context);
-   }
+  static AppCubit get(context) {
+    return BlocProvider.of(context);
+  }
 
-  List<Map> tasks = [];
+  List<Map> newTasks = [];
+  List<Map> doneTasks = [];
+  List<Map> archiveTasks = [];
   Database? database;
 
   void createDatabase() {
@@ -33,11 +35,7 @@ class AppCubit extends Cubit<AppStates> {
         });
       },
       onOpen: (database) {
-        getDataFromDatabase(database).then((value) {
-          tasks = value;
-          print(tasks);
-          emit(AppGetDataFromDatabaseState());
-        });
+        getDataFromDatabase(database);
         print('database opened');
       },
     ).then((value) {
@@ -46,13 +44,13 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  Future insertToDatabase({
+  insertToDatabase({
     @required String? title,
     @required String? time,
     @required String? date,
     String? status = 'new',
   }) async {
-    return await database!.transaction((txn) async {
+    await database!.transaction((txn) async {
       txn
           .rawInsert(
         'INSERT INTO tasks(title, time, date, status) VALUES("$title", "$time", "$date", "$status")',
@@ -60,14 +58,54 @@ class AppCubit extends Cubit<AppStates> {
           .then((value) {
         print('$value inserted successfully');
         emit(AppInsertDataToDatabaseState());
+        getDataFromDatabase(database);
       }).catchError((error) {
         print('Error When Inserting New Record ${error.toString()}');
       });
     });
   }
 
-  Future<List<Map>> getDataFromDatabase(database) async {
-    return await database!.rawQuery('SELECT * FROM tasks');
+  getDataFromDatabase(database) {
+    newTasks = [];
+    doneTasks = [];
+    archiveTasks = [];
+    emit(AppGetDataFromDatabaseLoadingState());
+    database!.rawQuery('SELECT * FROM tasks').then((value) {
+      value.forEach((element) {
+        if (element['status'] == 'new') {
+          newTasks.add(element);
+        } else if (element['status'] == 'done') {
+          doneTasks.add(element);
+        } else {
+          archiveTasks.add(element);
+        }
+      });
+      emit(AppGetDataFromDatabaseState());
+    });
+  }
+
+  void deleteDataFromDatabase({
+    @required int? id,
+  }) {
+    database!.rawDelete(
+        'DELETE FROM tasks WHERE id = ?', [id] ,
+    ).then((value) {
+      getDataFromDatabase(database);
+      emit(AppDeleteDataFromDatabaseState());
+    });
+  }
+
+  void updateDataInDatabase({
+    @required String? status,
+    @required int? id,
+  }) {
+    database!.rawUpdate(
+      'UPDATE tasks SET status = ? WHERE id = ?',
+      ['$status', '$id'],
+    ).then((value) {
+      getDataFromDatabase(database);
+      emit(AppUpdateDataInDatabaseState());
+    });
   }
 
   int currentIndex = 0;
@@ -89,14 +127,13 @@ class AppCubit extends Cubit<AppStates> {
 
   bool isBottomSheetShown = false;
   IconData fbIcon = Icons.edit;
-  void changeBottomSheetState(
-  {
-  @required bool ? isShown ,
-  @required IconData ? icon ,
-  })
-  {
-    isBottomSheetShown = isShown! ;
-    fbIcon = icon! ;
+
+  void changeBottomSheetState({
+    @required bool? isShown,
+    @required IconData? icon,
+  }) {
+    isBottomSheetShown = isShown!;
+    fbIcon = icon!;
     emit(AppChangeBottomSheetState());
   }
 }
