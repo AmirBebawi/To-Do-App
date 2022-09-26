@@ -6,14 +6,7 @@ import '../../shared/components/components.dart';
 import '../../shared/cubit/cubit.dart';
 import '../../shared/cubit/states.dart';
 
-class ArchivedTasks extends StatefulWidget {
-  const ArchivedTasks({Key? key}) : super(key: key);
-
-  @override
-  State<ArchivedTasks> createState() => _ArchivedTasksState();
-}
-
-class _ArchivedTasksState extends State<ArchivedTasks> {
+class ArchivedTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
@@ -28,3 +21,5 @@ class _ArchivedTasksState extends State<ArchivedTasks> {
     );
   }
 }
+
+
