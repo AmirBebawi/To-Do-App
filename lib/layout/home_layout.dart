@@ -36,6 +36,9 @@ class HomeLayout extends StatelessWidget {
                         title: titleController.text,
                         time: timeController.text,
                         date: dateController.text);
+                    timeController.text = '';
+                    titleController.text = '';
+                    dateController.text = '';
                   }
                 } else {
                   scaffoldKey.currentState!
